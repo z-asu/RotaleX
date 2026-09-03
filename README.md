@@ -29,21 +29,13 @@ npm run dev
 
 ## Deploy
 
-1. **Backend → Koyeb** (gratis, tanpa kartu)
-   - Daftar/login koyeb.com (pakai akun GitHub)
-   - Create App → **GitHub** → pilih repo `RotaleX`
-   - Builder: **Dockerfile** | Path: `/backend`
-   - App name: `rotalex-api` | Instance: Free | Port: `8080` (HTTP)
-   - Environment variables (Add variable):
-     - `DATABASE_URL` = URL Neon PostgreSQL
-     - `JWT_SECRET` = secret acak
-   - Create/Deploy → tunggu build (~3-5 menit)
-   - Copy URL publik (mis. `https://rotalex-api-xxxx.koyeb.app`)
+1. **Backend → Render**
+   - New Web Service → pilih repo ini, Root Directory: `backend`
+   - Build: `go build -o rotalex .` | Start: `./rotalex`
+   - Env vars: `DATABASE_URL`, `JWT_SECRET` (PORT otomatis dari Render)
 
 2. **Frontend → Vercel**
-   - vercel.com → Add New Project → import repo `RotaleX`
-   - Root Directory: `frontend` (Framework auto-detect: Vite)
-   - Environment Variable: `VITE_API_URL` = URL Koyeb dari langkah 1
-   - Deploy → dapat URL `https://rotalex.vercel.app`
+   - Import repo, Root Directory: `frontend`
+   - Env var: `VITE_API_URL` = URL backend Render (mis. `https://rotalex-api.onrender.com`)
 
-Catatan: instance Koyeb free bisa sleep saat idle — request pertama lambat beberapa detik (normal). Foto profil tersimpan di disk instance (ephemeral); data DB aman.
+Catatan: storage Render free tier ephemeral — foto profil upload hilang saat redeploy (data DB aman).

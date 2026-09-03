@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -16,46 +15,10 @@ import (
 var db *sql.DB
 
 func loadEnv() {
-	// Env var platform selalu menang
-	if os.Getenv("DATABASE_URL") != "" {
+	data, err := os.ReadFile(".env")
+	if err != nil {
 		return
 	}
-
-	// Cari .env: working dir, beberapa path umum, lalu scan /app
-	candidates := []string{
-		".env",
-		"./app/.env",
-		"./src/.env",
-		"./backend/.env",
-		"/app/.env",
-		"/app/app/.env",
-		"/app/src/.env",
-		"/app/backend/.env",
-	}
-	for _, path := range candidates {
-		if data, err := os.ReadFile(path); err == nil {
-			applyEnvFile(data)
-			if os.Getenv("DATABASE_URL") != "" {
-				return
-			}
-		}
-	}
-
-	// Scan /app secara rekursif (maksimal 3 level)
-	filepath.Walk("/app", func(path string, info os.FileInfo, err error) error {
-		if err != nil || info == nil || info.IsDir() {
-			return nil
-		}
-		if info.Name() == ".env" {
-			if data, err := os.ReadFile(path); err == nil {
-				applyEnvFile(data)
-			}
-		}
-		return nil
-	})
-}
-
-func applyEnvFile(data []byte) {
 	for _, line := range strings.Split(string(data), "\n") {
 		line = strings.TrimSpace(line)
 		if line == "" || strings.HasPrefix(line, "#") {
@@ -84,12 +47,9 @@ func connectDB() *sql.DB {
 		log.Fatal("failed to open database: ", err)
 	}
 
-	// Neon free tier memutus koneksi idle — jangan simpan koneksi idle,
-	// dan daur ulang koneksi lebih cepat dari idle timeout Neon (~5 menit)
 	database.SetMaxOpenConns(5)
-	database.SetMaxIdleConns(0)
-	database.SetConnMaxLifetime(2 * time.Minute)
-	database.SetConnMaxIdleTime(90 * time.Second)
+	database.SetMaxIdleConns(5)
+	database.SetConnMaxLifetime(5 * time.Minute)
 
 	if err := database.Ping(); err != nil {
 		log.Fatal("failed to connect to database: ", err)
