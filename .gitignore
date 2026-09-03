@@ -1,0 +1,24 @@
+# Environment & secrets
+backend/.env
+.env
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Go build artifacts
+backend/rotalex.exe
+backend/rotalex
+backend/server.log
+backend/server.err.log
+
+# Uploaded files (ephemeral)
+backend/uploads/
+
+# Logs
+frontend/vite.log
+frontend/vite.err.log
+
+# OS
+Thumbs.db
+.DS_Store
