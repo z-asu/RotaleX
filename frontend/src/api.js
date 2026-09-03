@@ -1,4 +1,10 @@
-const API_URL = "http://localhost:8080/api";
+export const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080"
+const API_URL = `${API_BASE}/api`;
+
+// URL lengkap untuk asset dari backend (mis. foto profil /uploads/...)
+export function backendUrl(path) {
+  return `${API_BASE}${path}`
+}
 
 function getToken() {
   return localStorage.getItem("token")

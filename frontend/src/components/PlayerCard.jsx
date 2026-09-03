@@ -1,11 +1,10 @@
 import React from 'react'
 import { getRankIcon, rankLabel } from '../images'
-
-const BACKEND_URL = 'http://localhost:8080'
+import { backendUrl } from '../api'
 
 export default function PlayerCard({ player, onEdit, onDelete, onOpen }) {
   const avatarUrl = player.profile_image
-    ? `${BACKEND_URL}${player.profile_image}`
+    ? backendUrl(player.profile_image)
     : null
   const rankIcon = player.game ? getRankIcon(player.game.name, player.rank) : null
 

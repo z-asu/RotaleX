@@ -10,11 +10,10 @@ import {
   getTeams,
   getCurrentUser,
   setCurrentUser,
+  backendUrl,
 } from '../api'
 import { showToast, showError } from '../swal'
 import { RANKS, getRankIcon, rankLabel } from '../images'
-
-const BACKEND_URL = 'http://localhost:8080'
 
 export default function Profile({ onUserUpdated }) {
   const [form, setForm] = useState({ username: '', email: '' })
@@ -145,7 +144,7 @@ export default function Profile({ onUserUpdated }) {
 
   const avatarUrl =
     me && me.profile_image
-      ? `${BACKEND_URL}${me.profile_image}`
+      ? backendUrl(me.profile_image)
       : null
 
   return (

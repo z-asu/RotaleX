@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { backendUrl } from '../api'
 
 export default function Navbar({ page, onNavigate, user, onLogout, isAdmin, theme, onToggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -63,7 +64,7 @@ export default function Navbar({ page, onNavigate, user, onLogout, isAdmin, them
               >
                 {user.profile_image ? (
                   <img
-                    src={`http://localhost:8080${user.profile_image}`}
+                    src={backendUrl(user.profile_image)}
                     alt={user.username}
                     className="nav-avatar-img"
                   />

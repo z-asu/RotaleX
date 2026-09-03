@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"strings"
 
 	"rotalex/backend/handlers"
 	"rotalex/backend/routes"
@@ -11,6 +13,10 @@ import (
 )
 
 func main() {
+	if os.Getenv("GIN_MODE") == "" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	db = connectDB()
 	defer db.Close()
 
@@ -23,6 +29,14 @@ func main() {
 	r := gin.Default()
 	routes.Setup(r)
 
-	fmt.Println("Backend running on http://localhost:8080")
-	log.Fatal(r.Run(":8080"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	if strings.HasPrefix(port, ":") == false {
+		port = ":" + port
+	}
+
+	fmt.Println("Backend running on port", port)
+	log.Fatal(r.Run(port))
 }

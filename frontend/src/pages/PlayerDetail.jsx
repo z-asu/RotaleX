@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getPlayer, getTeam, getPlayers } from '../api'
+import { getPlayer, getTeam, getPlayers, backendUrl } from '../api'
 import { getGameImage, getRankIcon, rankLabel } from '../images'
-
-const BACKEND_URL = 'http://localhost:8080'
 
 export default function PlayerDetail({ playerId, onBack }) {
   const [player, setPlayer] = useState(null)
@@ -30,7 +28,7 @@ export default function PlayerDetail({ playerId, onBack }) {
   if (!player) return <div>{backBtn}<p className="loading">Loading...</p></div>
 
   const avatarUrl = player.profile_image
-    ? `${BACKEND_URL}${player.profile_image}`
+    ? backendUrl(player.profile_image)
     : null
   const gameImg = player.game ? getGameImage(player.game.name) : null
   const rankIcon = player.game ? getRankIcon(player.game.name, player.rank) : null
@@ -108,7 +106,7 @@ export default function PlayerDetail({ playerId, onBack }) {
               <h2 className="roster-title">Teammates — {player.team.name}</h2>
               <div className="roster-list">
                 {teammates.map((t) => {
-                  const tmAvatar = t.profile_image ? `${BACKEND_URL}${t.profile_image}` : null
+                  const tmAvatar = t.profile_image ? backendUrl(t.profile_image) : null
                   return (
                     <div key={t.id} className="roster-item">
                       {tmAvatar ? (

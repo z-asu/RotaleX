@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getTeam, getPlayers } from '../api'
+import { getTeam, getPlayers, backendUrl } from '../api'
 import { getGameImage } from '../images'
-
-const BACKEND_URL = 'http://localhost:8080'
 
 export default function TeamDetail({ teamId, onBack }) {
   const [team, setTeam] = useState(null)
@@ -58,7 +56,7 @@ export default function TeamDetail({ teamId, onBack }) {
         ) : (
           <div className="roster-list">
             {players.map((p) => {
-              const avatarUrl = p.profile_image ? `${BACKEND_URL}${p.profile_image}` : null
+              const avatarUrl = p.profile_image ? backendUrl(p.profile_image) : null
               return (
                 <div key={p.id} className="roster-item">
                   {avatarUrl ? (

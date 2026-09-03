@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { getDashboard, getGames, getPlayers } from '../api'
+import { getDashboard, getGames, getPlayers, backendUrl } from '../api'
 import { getGameImage } from '../images'
-
-const BACKEND_URL = 'http://localhost:8080'
 
 export default function Dashboard({ onOpenPlayer }) {
   const [stats, setStats] = useState(null)
@@ -141,7 +139,7 @@ export default function Dashboard({ onOpenPlayer }) {
               <p className="recent-empty">No players yet.</p>
             ) : (
               recentPlayers.map((p) => {
-                const avatarUrl = p.profile_image ? `${BACKEND_URL}${p.profile_image}` : null
+                const avatarUrl = p.profile_image ? backendUrl(p.profile_image) : null
                 return (
                   <button
                     key={p.id}
